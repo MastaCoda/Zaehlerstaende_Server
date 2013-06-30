@@ -1,9 +1,9 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/EEJ7cNvdVtXD8cxsNqPTyc-GK1w\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/SxfEjGTgLZL7kLtBk6LTVDtUXGA\"",
  "discoveryVersion": "v1",
- "id": "messageEndpoint:v1",
- "name": "messageEndpoint",
+ "id": "meterendpoint:v1",
+ "name": "meterendpoint",
  "version": "v1",
  "description": "This is an API",
  "ownerDomain": "roman.de",
@@ -63,14 +63,14 @@
   }
  },
  "schemas": {
-  "CollectionResponse_MessageData": {
-   "id": "CollectionResponse_MessageData",
+  "CollectionResponse_Meter": {
+   "id": "CollectionResponse_Meter",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "MessageData"
+      "$ref": "Meter"
      }
     },
     "nextPageToken": {
@@ -78,54 +78,111 @@
     }
    }
   },
-  "Key": {
-   "id": "Key",
+  "Meter": {
+   "id": "Meter",
    "type": "object",
    "properties": {
-    "appId": {
+    "description": {
      "type": "string"
     },
-    "complete": {
-     "type": "boolean"
-    },
     "id": {
-     "type": "string",
-     "format": "int64"
+     "type": "integer",
+     "format": "int32"
     },
-    "kind": {
+    "name": {
+     "type": "string"
+    },
+    "types": {
+     "$ref": "MeterTypes"
+    },
+    "units": {
+     "$ref": "Units"
+    },
+    "user": {
+     "$ref": "User"
+    }
+   }
+  },
+  "MeterTypes": {
+   "id": "MeterTypes",
+   "type": "string",
+   "enum": [
+    "Gas",
+    "Strom",
+    "Wasser",
+    "Öl"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "Units": {
+   "id": "Units",
+   "type": "string",
+   "enum": [
+    "Liter",
+    "kWh",
+    "m³"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    ""
+   ]
+  },
+  "User": {
+   "id": "User",
+   "type": "object",
+   "properties": {
+    "id": {
      "type": "string"
     },
     "name": {
      "type": "string"
     },
-    "namespace": {
+    "password": {
      "type": "string"
-    },
-    "parent": {
-     "$ref": "Key"
-    }
-   }
-  },
-  "MessageData": {
-   "id": "MessageData",
-   "type": "object",
-   "properties": {
-    "key": {
-     "$ref": "Key"
-    },
-    "message": {
-     "type": "string"
-    },
-    "timestamp": {
-     "type": "string",
-     "format": "int64"
     }
    }
   }
  },
  "methods": {
-  "messageEndpoint.listMessages": {
-   "id": "messageEndpoint.listMessages",
+  "meterendpoint.getMeter": {
+   "id": "meterendpoint.getMeter",
+   "allowGet": true,
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "Meter"
+   }
+  },
+  "meterendpoint.insertMeter": {
+   "id": "meterendpoint.insertMeter",
+   "parameters": {
+    "resource": {
+     "$ref": "Meter"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Meter"
+   }
+  },
+  "meterendpoint.listMeter": {
+   "id": "meterendpoint.listMeter",
    "allowGet": true,
    "parameters": {
     "cursor": {
@@ -137,20 +194,38 @@
     }
    },
    "returns": {
-    "$ref": "CollectionResponse_MessageData"
+    "$ref": "CollectionResponse_Meter"
    }
   },
-  "messageEndpoint.sendMessage": {
-   "id": "messageEndpoint.sendMessage",
+  "meterendpoint.removeMeter": {
+   "id": "meterendpoint.removeMeter",
    "parameters": {
-    "message": {
+    "id": {
      "type": "string",
-     "required": true
+     "required": true,
+     "format": "int64"
     }
    },
    "parameterOrder": [
-    "message"
-   ]
+    "id"
+   ],
+   "returns": {
+    "$ref": "Meter"
+   }
+  },
+  "meterendpoint.updateMeter": {
+   "id": "meterendpoint.updateMeter",
+   "parameters": {
+    "resource": {
+     "$ref": "Meter"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "Meter"
+   }
   }
  }
 }

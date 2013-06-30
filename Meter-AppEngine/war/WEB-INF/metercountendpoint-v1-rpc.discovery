@@ -1,9 +1,9 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/jwI8oAWiWkqCS8d8Ms_v7DP7WNc\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/F0E1aF7VdR87lThQ-3abLeWKFC0\"",
  "discoveryVersion": "v1",
- "id": "deviceinfoendpoint:v1",
- "name": "deviceinfoendpoint",
+ "id": "metercountendpoint:v1",
+ "name": "metercountendpoint",
  "version": "v1",
  "description": "This is an API",
  "ownerDomain": "roman.de",
@@ -63,14 +63,14 @@
   }
  },
  "schemas": {
-  "CollectionResponse_DeviceInfo": {
-   "id": "CollectionResponse_DeviceInfo",
+  "CollectionResponse_MeterCount": {
+   "id": "CollectionResponse_MeterCount",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "DeviceInfo"
+      "$ref": "MeterCount"
      }
     },
     "nextPageToken": {
@@ -78,56 +78,173 @@
     }
    }
   },
-  "DeviceInfo": {
-   "id": "DeviceInfo",
+  "Date": {
+   "id": "Date",
    "type": "object",
    "properties": {
-    "deviceInformation": {
-     "type": "string"
+    "date": {
+     "type": "integer",
+     "format": "int32"
     },
-    "deviceRegistrationID": {
-     "type": "string"
+    "day": {
+     "type": "integer",
+     "format": "int32"
     },
-    "timestamp": {
+    "hours": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "minutes": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "month": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "seconds": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "time": {
      "type": "string",
      "format": "int64"
+    },
+    "timezoneOffset": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "year": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
+  "Meter": {
+   "id": "Meter",
+   "type": "object",
+   "properties": {
+    "description": {
+     "type": "string"
+    },
+    "id": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "name": {
+     "type": "string"
+    },
+    "types": {
+     "$ref": "MeterTypes"
+    },
+    "units": {
+     "$ref": "Units"
+    },
+    "user": {
+     "$ref": "User"
+    }
+   }
+  },
+  "MeterCount": {
+   "id": "MeterCount",
+   "type": "object",
+   "properties": {
+    "date": {
+     "$ref": "Date"
+    },
+    "id": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "meter": {
+     "$ref": "Meter"
+    },
+    "value": {
+     "type": "number",
+     "format": "float"
+    }
+   }
+  },
+  "MeterTypes": {
+   "id": "MeterTypes",
+   "type": "string",
+   "enum": [
+    "Gas",
+    "Strom",
+    "Wasser",
+    "Öl"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "Units": {
+   "id": "Units",
+   "type": "string",
+   "enum": [
+    "Liter",
+    "kWh",
+    "m³"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    ""
+   ]
+  },
+  "User": {
+   "id": "User",
+   "type": "object",
+   "properties": {
+    "id": {
+     "type": "string"
+    },
+    "name": {
+     "type": "string"
+    },
+    "password": {
+     "type": "string"
     }
    }
   }
  },
  "methods": {
-  "deviceinfoendpoint.getDeviceInfo": {
-   "id": "deviceinfoendpoint.getDeviceInfo",
+  "metercountendpoint.getMeterCount": {
+   "id": "metercountendpoint.getMeterCount",
    "allowGet": true,
    "parameters": {
     "id": {
      "type": "string",
-     "required": true
+     "required": true,
+     "format": "int64"
     }
    },
    "parameterOrder": [
     "id"
    ],
    "returns": {
-    "$ref": "DeviceInfo"
+    "$ref": "MeterCount"
    }
   },
-  "deviceinfoendpoint.insertDeviceInfo": {
-   "id": "deviceinfoendpoint.insertDeviceInfo",
+  "metercountendpoint.insertMeterCount": {
+   "id": "metercountendpoint.insertMeterCount",
    "parameters": {
     "resource": {
-     "$ref": "DeviceInfo"
+     "$ref": "MeterCount"
     }
    },
    "parameterOrder": [
     "resource"
    ],
    "returns": {
-    "$ref": "DeviceInfo"
+    "$ref": "MeterCount"
    }
   },
-  "deviceinfoendpoint.listDeviceInfo": {
-   "id": "deviceinfoendpoint.listDeviceInfo",
+  "metercountendpoint.listMeterCount": {
+   "id": "metercountendpoint.listMeterCount",
    "allowGet": true,
    "parameters": {
     "cursor": {
@@ -139,36 +256,37 @@
     }
    },
    "returns": {
-    "$ref": "CollectionResponse_DeviceInfo"
+    "$ref": "CollectionResponse_MeterCount"
    }
   },
-  "deviceinfoendpoint.removeDeviceInfo": {
-   "id": "deviceinfoendpoint.removeDeviceInfo",
+  "metercountendpoint.removeMeterCount": {
+   "id": "metercountendpoint.removeMeterCount",
    "parameters": {
     "id": {
      "type": "string",
-     "required": true
+     "required": true,
+     "format": "int64"
     }
    },
    "parameterOrder": [
     "id"
    ],
    "returns": {
-    "$ref": "DeviceInfo"
+    "$ref": "MeterCount"
    }
   },
-  "deviceinfoendpoint.updateDeviceInfo": {
-   "id": "deviceinfoendpoint.updateDeviceInfo",
+  "metercountendpoint.updateMeterCount": {
+   "id": "metercountendpoint.updateMeterCount",
    "parameters": {
     "resource": {
-     "$ref": "DeviceInfo"
+     "$ref": "MeterCount"
     }
    },
    "parameterOrder": [
     "resource"
    ],
    "returns": {
-    "$ref": "DeviceInfo"
+    "$ref": "MeterCount"
    }
   }
  }

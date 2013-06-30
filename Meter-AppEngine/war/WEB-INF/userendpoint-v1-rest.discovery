@@ -1,9 +1,9 @@
 {
- "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/EEJ7cNvdVtXD8cxsNqPTyc-GK1w\"",
+ "kind": "discovery#restDescription",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/1MmGOb3ir24vDSswGN4cVDYN8M0\"",
  "discoveryVersion": "v1",
- "id": "messageEndpoint:v1",
- "name": "messageEndpoint",
+ "id": "userendpoint:v1",
+ "name": "userendpoint",
  "version": "v1",
  "description": "This is an API",
  "ownerDomain": "roman.de",
@@ -13,10 +13,12 @@
   "x16": "http://www.google.com/images/icons/product/search-16.gif",
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
- "protocol": "rpc",
+ "protocol": "rest",
+ "baseUrl": "https://metertracker.appspot.com/_ah/api/userendpoint/v1/",
+ "basePath": "/_ah/api/userendpoint/v1/",
  "rootUrl": "https://metertracker.appspot.com/_ah/api/",
- "rpcUrl": "https://metertracker.appspot.com/_ah/api/rpc",
- "rpcPath": "/_ah/api/rpc",
+ "servicePath": "userendpoint/v1/",
+ "batchPath": "batch",
  "parameters": {
   "alt": {
    "type": "string",
@@ -63,14 +65,14 @@
   }
  },
  "schemas": {
-  "CollectionResponse_MessageData": {
-   "id": "CollectionResponse_MessageData",
+  "CollectionResponse_User": {
+   "id": "CollectionResponse_User",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "MessageData"
+      "$ref": "User"
      }
     },
     "nextPageToken": {
@@ -78,79 +80,101 @@
     }
    }
   },
-  "Key": {
-   "id": "Key",
+  "User": {
+   "id": "User",
    "type": "object",
    "properties": {
-    "appId": {
-     "type": "string"
-    },
-    "complete": {
-     "type": "boolean"
-    },
     "id": {
-     "type": "string",
-     "format": "int64"
-    },
-    "kind": {
      "type": "string"
     },
     "name": {
      "type": "string"
     },
-    "namespace": {
+    "password": {
      "type": "string"
-    },
-    "parent": {
-     "$ref": "Key"
-    }
-   }
-  },
-  "MessageData": {
-   "id": "MessageData",
-   "type": "object",
-   "properties": {
-    "key": {
-     "$ref": "Key"
-    },
-    "message": {
-     "type": "string"
-    },
-    "timestamp": {
-     "type": "string",
-     "format": "int64"
     }
    }
   }
  },
  "methods": {
-  "messageEndpoint.listMessages": {
-   "id": "messageEndpoint.listMessages",
-   "allowGet": true,
+  "getUser": {
+   "id": "userendpoint.getUser",
+   "path": "user/{id}",
+   "httpMethod": "GET",
    "parameters": {
-    "cursor": {
-     "type": "string"
-    },
-    "limit": {
-     "type": "integer",
-     "format": "int32"
-    }
-   },
-   "returns": {
-    "$ref": "CollectionResponse_MessageData"
-   }
-  },
-  "messageEndpoint.sendMessage": {
-   "id": "messageEndpoint.sendMessage",
-   "parameters": {
-    "message": {
+    "id": {
      "type": "string",
-     "required": true
+     "required": true,
+     "format": "int64",
+     "location": "path"
     }
    },
    "parameterOrder": [
-    "message"
-   ]
+    "id"
+   ],
+   "response": {
+    "$ref": "User"
+   }
+  },
+  "insertUser": {
+   "id": "userendpoint.insertUser",
+   "path": "user",
+   "httpMethod": "POST",
+   "request": {
+    "$ref": "User"
+   },
+   "response": {
+    "$ref": "User"
+   }
+  },
+  "listUser": {
+   "id": "userendpoint.listUser",
+   "path": "user",
+   "httpMethod": "GET",
+   "parameters": {
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "limit": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_User"
+   }
+  },
+  "removeUser": {
+   "id": "userendpoint.removeUser",
+   "path": "user/{id}",
+   "httpMethod": "DELETE",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "response": {
+    "$ref": "User"
+   }
+  },
+  "updateUser": {
+   "id": "userendpoint.updateUser",
+   "path": "user",
+   "httpMethod": "PUT",
+   "request": {
+    "$ref": "User"
+   },
+   "response": {
+    "$ref": "User"
+   }
   }
  }
 }

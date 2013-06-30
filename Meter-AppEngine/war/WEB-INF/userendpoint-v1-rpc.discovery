@@ -1,9 +1,9 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/EEJ7cNvdVtXD8cxsNqPTyc-GK1w\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/1MmGOb3ir24vDSswGN4cVDYN8M0\"",
  "discoveryVersion": "v1",
- "id": "messageEndpoint:v1",
- "name": "messageEndpoint",
+ "id": "userendpoint:v1",
+ "name": "userendpoint",
  "version": "v1",
  "description": "This is an API",
  "ownerDomain": "roman.de",
@@ -63,14 +63,14 @@
   }
  },
  "schemas": {
-  "CollectionResponse_MessageData": {
-   "id": "CollectionResponse_MessageData",
+  "CollectionResponse_User": {
+   "id": "CollectionResponse_User",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "MessageData"
+      "$ref": "User"
      }
     },
     "nextPageToken": {
@@ -78,54 +78,56 @@
     }
    }
   },
-  "Key": {
-   "id": "Key",
+  "User": {
+   "id": "User",
    "type": "object",
    "properties": {
-    "appId": {
-     "type": "string"
-    },
-    "complete": {
-     "type": "boolean"
-    },
     "id": {
-     "type": "string",
-     "format": "int64"
-    },
-    "kind": {
      "type": "string"
     },
     "name": {
      "type": "string"
     },
-    "namespace": {
+    "password": {
      "type": "string"
-    },
-    "parent": {
-     "$ref": "Key"
-    }
-   }
-  },
-  "MessageData": {
-   "id": "MessageData",
-   "type": "object",
-   "properties": {
-    "key": {
-     "$ref": "Key"
-    },
-    "message": {
-     "type": "string"
-    },
-    "timestamp": {
-     "type": "string",
-     "format": "int64"
     }
    }
   }
  },
  "methods": {
-  "messageEndpoint.listMessages": {
-   "id": "messageEndpoint.listMessages",
+  "userendpoint.getUser": {
+   "id": "userendpoint.getUser",
+   "allowGet": true,
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "User"
+   }
+  },
+  "userendpoint.insertUser": {
+   "id": "userendpoint.insertUser",
+   "parameters": {
+    "resource": {
+     "$ref": "User"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "User"
+   }
+  },
+  "userendpoint.listUser": {
+   "id": "userendpoint.listUser",
    "allowGet": true,
    "parameters": {
     "cursor": {
@@ -137,20 +139,38 @@
     }
    },
    "returns": {
-    "$ref": "CollectionResponse_MessageData"
+    "$ref": "CollectionResponse_User"
    }
   },
-  "messageEndpoint.sendMessage": {
-   "id": "messageEndpoint.sendMessage",
+  "userendpoint.removeUser": {
+   "id": "userendpoint.removeUser",
    "parameters": {
-    "message": {
+    "id": {
      "type": "string",
-     "required": true
+     "required": true,
+     "format": "int64"
     }
    },
    "parameterOrder": [
-    "message"
-   ]
+    "id"
+   ],
+   "returns": {
+    "$ref": "User"
+   }
+  },
+  "userendpoint.updateUser": {
+   "id": "userendpoint.updateUser",
+   "parameters": {
+    "resource": {
+     "$ref": "User"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "User"
+   }
   }
  }
 }
