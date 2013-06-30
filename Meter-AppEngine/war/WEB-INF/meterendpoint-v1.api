@@ -27,6 +27,21 @@
   "ownerName" : "roman.de",
   "packagePath" : "meter",
   "methods" : {
+    "meterendpoint.insertMeter" : {
+      "path" : "meter",
+      "httpMethod" : "POST",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.insertMeter",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "meterendpoint.getMeter" : {
       "path" : "meter/{id}",
       "httpMethod" : "GET",
@@ -42,21 +57,6 @@
           }
         },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "meterendpoint.insertMeter" : {
-      "path" : "meter",
-      "httpMethod" : "POST",
-      "scopes" : [ ],
-      "audiences" : [ ],
-      "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MeterEndpoint.insertMeter",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -191,15 +191,15 @@
       }
     },
     "methods" : {
-      "de.roman.meter.MeterEndpoint.getMeter" : {
-        "response" : {
-          "$ref" : "Meter"
-        }
-      },
       "de.roman.meter.MeterEndpoint.insertMeter" : {
         "request" : {
           "$ref" : "Meter"
         },
+        "response" : {
+          "$ref" : "Meter"
+        }
+      },
+      "de.roman.meter.MeterEndpoint.getMeter" : {
         "response" : {
           "$ref" : "Meter"
         }

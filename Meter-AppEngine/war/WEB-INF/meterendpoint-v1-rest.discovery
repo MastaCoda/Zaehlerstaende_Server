@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/SxfEjGTgLZL7kLtBk6LTVDtUXGA\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/dzSENbJ7w83gmdxT1gOQ22vukis\"",
  "discoveryVersion": "v1",
  "id": "meterendpoint:v1",
  "name": "meterendpoint",
@@ -140,7 +140,8 @@
    "type": "object",
    "properties": {
     "id": {
-     "type": "string"
+     "type": "string",
+     "format": "int64"
     },
     "name": {
      "type": "string"

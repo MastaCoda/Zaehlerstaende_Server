@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/F0E1aF7VdR87lThQ-3abLeWKFC0\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/_jcsY8z8QzpopCHcgDmYuhPogv0\"",
  "discoveryVersion": "v1",
  "id": "metercountendpoint:v1",
  "name": "metercountendpoint",
@@ -200,7 +200,8 @@
    "type": "object",
    "properties": {
     "id": {
-     "type": "string"
+     "type": "string",
+     "format": "int64"
     },
     "name": {
      "type": "string"

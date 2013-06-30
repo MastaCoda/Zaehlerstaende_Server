@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/1MmGOb3ir24vDSswGN4cVDYN8M0\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/zlDpwoRA5fITyATF0HlECPv7hoY\"",
  "discoveryVersion": "v1",
  "id": "userendpoint:v1",
  "name": "userendpoint",
@@ -83,7 +83,8 @@
    "type": "object",
    "properties": {
     "id": {
-     "type": "string"
+     "type": "string",
+     "format": "int64"
     },
     "name": {
      "type": "string"
