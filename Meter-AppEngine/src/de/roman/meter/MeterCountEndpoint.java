@@ -174,11 +174,15 @@ public class MeterCountEndpoint
 
 	private boolean containsMeterCount(MeterCount metercount)
 	{
+		if (metercount.getKey() == null)
+		{
+			return false;
+		}
 		EntityManager mgr = getEntityManager();
 		boolean contains = true;
 		try
 		{
-			MeterCount item = mgr.find(MeterCount.class, metercount.getId());
+			MeterCount item = mgr.find(MeterCount.class, metercount.getKey());
 			if (item == null)
 			{
 				contains = false;

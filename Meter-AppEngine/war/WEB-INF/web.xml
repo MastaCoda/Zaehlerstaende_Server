@@ -5,7 +5,7 @@
   <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
   <init-param>
    <param-name>services</param-name>
-   <param-value>de.roman.meter.DeviceInfoEndpoint,de.roman.meter.MessageEndpoint,de.roman.meter.MeterCountEndpoint,de.roman.meter.MeterEndpoint,de.roman.meter.UserEndpoint</param-value>
+   <param-value>de.roman.meter.DeviceInfoEndpoint,de.roman.meter.MessageEndpoint,de.roman.meter.MeterCountEndpoint,de.roman.meter.MeterEndpoint,de.roman.meter.UserEndpoint,de.roman.meter.UserEntityEndpoint,de.roman.meter.UserTableEndpoint</param-value>
   </init-param>
  </servlet>
  <servlet-mapping>

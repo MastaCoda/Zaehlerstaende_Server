@@ -18,8 +18,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-@Api(name = "meterendpoint", namespace = @ApiNamespace(ownerDomain = "roman.de", ownerName = "roman.de", packagePath = "meter"))
-public class MeterEndpoint
+@Api(name = "userentityendpoint", namespace = @ApiNamespace(ownerDomain = "roman.de", ownerName = "roman.de", packagePath = "meter"))
+public class UserEntityEndpoint
 {
 
 	/**
@@ -31,20 +31,21 @@ public class MeterEndpoint
 	 */
 	@SuppressWarnings(
 	{ "unchecked", "unused" })
-	@ApiMethod(name = "listMeter")
-	public CollectionResponse<Meter> listMeter(
+	@ApiMethod(name = "listUserEntity")
+	public CollectionResponse<UserEntity> listUserEntity(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit)
 	{
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
-		List<Meter> execute = null;
+		List<UserEntity> execute = null;
 
 		try
 		{
 			mgr = getEntityManager();
-			Query query = mgr.createQuery("select from Meter as Meter");
+			Query query = mgr
+					.createQuery("select from UserEntity as UserEntity");
 			if (cursorString != null && cursorString != "")
 			{
 				cursor = Cursor.fromWebSafeString(cursorString);
@@ -57,21 +58,21 @@ public class MeterEndpoint
 				query.setMaxResults(limit);
 			}
 
-			execute = (List<Meter>) query.getResultList();
+			execute = (List<UserEntity>) query.getResultList();
 			cursor = JPACursorHelper.getCursor(execute);
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
 
 			// Tight loop for fetching all entities from datastore and accomodate
 			// for lazy fetch.
-			for (Meter obj : execute)
+			for (UserEntity obj : execute)
 				;
 		} finally
 		{
 			mgr.close();
 		}
 
-		return CollectionResponse.<Meter> builder().setItems(execute)
+		return CollectionResponse.<UserEntity> builder().setItems(execute)
 				.setNextPageToken(cursorString).build();
 	}
 
@@ -81,19 +82,19 @@ public class MeterEndpoint
 	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getMeter")
-	public Meter getMeter(@Named("id") Long id)
+	@ApiMethod(name = "getUserEntity")
+	public UserEntity getUserEntity(@Named("id") Long id)
 	{
 		EntityManager mgr = getEntityManager();
-		Meter meter = null;
+		UserEntity userentity = null;
 		try
 		{
-			meter = mgr.find(Meter.class, id);
+			userentity = mgr.find(UserEntity.class, id);
 		} finally
 		{
 			mgr.close();
 		}
-		return meter;
+		return userentity;
 	}
 
 	/**
@@ -101,25 +102,25 @@ public class MeterEndpoint
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param meter the entity to be inserted.
+	 * @param userentity the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertMeter")
-	public Meter insertMeter(Meter meter)
+	@ApiMethod(name = "insertUserEntity")
+	public UserEntity insertUserEntity(UserEntity userentity)
 	{
 		EntityManager mgr = getEntityManager();
 		try
 		{
-			if (containsMeter(meter))
+			if (containsUserEntity(userentity))
 			{
 				throw new EntityExistsException("Object already exists");
 			}
-			mgr.persist(meter);
+			mgr.persist(userentity);
 		} finally
 		{
 			mgr.close();
 		}
-		return meter;
+		return userentity;
 	}
 
 	/**
@@ -127,25 +128,25 @@ public class MeterEndpoint
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param meter the entity to be updated.
+	 * @param userentity the entity to be updated.
 	 * @return The updated entity.
 	 */
-	@ApiMethod(name = "updateMeter")
-	public Meter updateMeter(Meter meter)
+	@ApiMethod(name = "updateUserEntity")
+	public UserEntity updateUserEntity(UserEntity userentity)
 	{
 		EntityManager mgr = getEntityManager();
 		try
 		{
-			if (!containsMeter(meter))
+			if (!containsUserEntity(userentity))
 			{
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			mgr.persist(meter);
+			mgr.persist(userentity);
 		} finally
 		{
 			mgr.close();
 		}
-		return meter;
+		return userentity;
 	}
 
 	/**
@@ -155,25 +156,25 @@ public class MeterEndpoint
 	 * @param id the primary key of the entity to be deleted.
 	 * @return The deleted entity.
 	 */
-	@ApiMethod(name = "removeMeter")
-	public Meter removeMeter(@Named("id") Long id)
+	@ApiMethod(name = "removeUserEntity")
+	public UserEntity removeUserEntity(@Named("id") Long id)
 	{
 		EntityManager mgr = getEntityManager();
-		Meter meter = null;
+		UserEntity userentity = null;
 		try
 		{
-			meter = mgr.find(Meter.class, id);
-			mgr.remove(meter);
+			userentity = mgr.find(UserEntity.class, id);
+			mgr.remove(userentity);
 		} finally
 		{
 			mgr.close();
 		}
-		return meter;
+		return userentity;
 	}
 
-	private boolean containsMeter(Meter meter)
+	private boolean containsUserEntity(UserEntity userentity)
 	{
-		if (meter.getKey() == null)
+		if (userentity.getId() == null)
 		{
 			return false;
 		}
@@ -181,7 +182,7 @@ public class MeterEndpoint
 		boolean contains = true;
 		try
 		{
-			Meter item = mgr.find(Meter.class, meter.getKey());
+			UserEntity item = mgr.find(UserEntity.class, userentity.getId());
 			if (item == null)
 			{
 				contains = false;

@@ -9,6 +9,8 @@ import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
 
+import com.google.appengine.api.users.User;
+
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -35,14 +37,14 @@ public class UserEndpoint
 	@SuppressWarnings(
 	{ "unchecked", "unused" })
 	@ApiMethod(name = "listUser")
-	public CollectionResponse<User> listUser(
+	public CollectionResponse<UserEntity> listUser(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit)
 	{
 
 		EntityManager mgr = null;
 		Cursor cursor = null;
-		List<User> execute = null;
+		List<UserEntity> execute = null;
 
 		try
 		{
@@ -60,7 +62,7 @@ public class UserEndpoint
 				query.setMaxResults(limit);
 			}
 
-			execute = (List<User>) query.getResultList();
+			execute = (List<UserEntity>) query.getResultList();
 			cursor = JPACursorHelper.getCursor(execute);
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
@@ -68,14 +70,14 @@ public class UserEndpoint
 			// Tight loop for fetching all entities from datastore and
 			// accomodate
 			// for lazy fetch.
-			for (User obj : execute)
+			for (UserEntity obj : execute)
 				;
 		} finally
 		{
 			mgr.close();
 		}
 
-		return CollectionResponse.<User> builder().setItems(execute)
+		return CollectionResponse.<UserEntity> builder().setItems(execute)
 				.setNextPageToken(cursorString).build();
 	}
 
@@ -88,13 +90,13 @@ public class UserEndpoint
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getUser")
-	public User getUser(@Named("id") Long id)
+	public UserEntity getUser(@Named("id") Long id)
 	{
 		EntityManager mgr = getEntityManager();
-		User user = null;
+		UserEntity user = null;
 		try
 		{
-			user = mgr.find(User.class, id);
+			user = mgr.find(UserEntity.class, id);
 		} finally
 		{
 			mgr.close();
@@ -107,26 +109,26 @@ public class UserEndpoint
 	 * already exists in the datastore, an exception is thrown. It uses HTTP
 	 * POST method.
 	 * 
-	 * @param user
+	 * @param userEnt
 	 *            the entity to be inserted.
 	 * @return The inserted entity.
 	 */
 	@ApiMethod(name = "insertUser")
-	public User insertUser(User user)
+	public UserEntity insertUser(UserEntity userEnt/*, User user*/)
 	{
 		EntityManager mgr = getEntityManager();
 		try
 		{
-			if (containsUser(user))
+			if (containsUser(userEnt))
 			{
 				throw new EntityExistsException("Object already exists");
 			}
-			mgr.persist(user);
+			mgr.persist(userEnt);
 		} finally
 		{
 			mgr.close();
 		}
-		return user;
+		return userEnt;
 	}
 
 	/**
@@ -134,26 +136,26 @@ public class UserEndpoint
 	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
 	 * method.
 	 * 
-	 * @param user
+	 * @param userEnt
 	 *            the entity to be updated.
 	 * @return The updated entity.
 	 */
 	@ApiMethod(name = "updateUser")
-	public User updateUser(User user)
+	public UserEntity updateUser(UserEntity userEnt)
 	{
 		EntityManager mgr = getEntityManager();
 		try
 		{
-			if (!containsUser(user))
+			if (!containsUser(userEnt))
 			{
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			mgr.persist(user);
+			mgr.persist(userEnt);
 		} finally
 		{
 			mgr.close();
 		}
-		return user;
+		return userEnt;
 	}
 
 	/**
@@ -165,13 +167,13 @@ public class UserEndpoint
 	 * @return The deleted entity.
 	 */
 	@ApiMethod(name = "removeUser")
-	public User removeUser(@Named("id") Long id)
+	public UserEntity removeUser(@Named("id") Long id)
 	{
 		EntityManager mgr = getEntityManager();
-		User user = null;
+		UserEntity user = null;
 		try
 		{
-			user = mgr.find(User.class, id);
+			user = mgr.find(UserEntity.class, id);
 			mgr.remove(user);
 		} finally
 		{
@@ -180,9 +182,9 @@ public class UserEndpoint
 		return user;
 	}
 
-	private boolean containsUser(User user)
+	private boolean containsUser(UserEntity userEnt)
 	{
-		if (user.getId() == null)
+		if (userEnt.getId() == null)
 		{
 			return false;
 		}
@@ -190,7 +192,7 @@ public class UserEndpoint
 		boolean contains = true;
 		try
 		{
-			User item = mgr.find(User.class, user.getId());
+			UserEntity item = mgr.find(UserEntity.class, userEnt.getId());
 			if (item == null)
 			{
 				contains = false;

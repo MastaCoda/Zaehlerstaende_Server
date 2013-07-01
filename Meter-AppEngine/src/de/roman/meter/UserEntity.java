@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.Key;
 
 @Entity
-public class User
+public class UserEntity
 {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
