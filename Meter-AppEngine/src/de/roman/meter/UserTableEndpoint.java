@@ -4,6 +4,7 @@ import de.roman.meter.EMF;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
@@ -97,19 +98,22 @@ public class UserTableEndpoint
 	}
 	
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having the name. It uses HTTP GET method.
 	 *
 	 * @param name email address of user.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getUserByEmail")
+	@ApiMethod(name = "getUserByEmail", path = "userbyemail",
+		    httpMethod = HttpMethod.GET)
 	public UserTable getUserByEmail(@Named("name") String name)
 	{
 		EntityManager mgr = getEntityManager();
 		UserTable usertable = null;
 		try
 		{
-			usertable = mgr.find(UserTable.class, name);
+			Query query = mgr.createQuery("select from UserTable ut where name = ?1").setParameter(1, name);
+			
+			usertable = (UserTable) query.getSingleResult();
 		} finally
 		{
 			mgr.close();

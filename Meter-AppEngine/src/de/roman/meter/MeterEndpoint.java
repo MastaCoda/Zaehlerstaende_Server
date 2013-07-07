@@ -89,6 +89,7 @@ public class MeterEndpoint
 		try
 		{
 			meter = mgr.find(Meter.class, id);
+			mgr.clear();
 		} finally
 		{
 			mgr.close();

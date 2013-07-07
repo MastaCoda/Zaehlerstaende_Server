@@ -1,7 +1,9 @@
 package de.roman.meter;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,12 +25,12 @@ public class Meter
 //private long id;
 private Key key;
 
-@OneToMany(mappedBy="meter")
-private List<MeterCount> meterCounts;
+/*@OneToMany(mappedBy="meter", cascade = CascadeType.ALL)
+private List<MeterCount> meterCounts = new ArrayList<MeterCount>();*/
 
 
 @ManyToOne(fetch=FetchType.LAZY)
-@JoinColumn(name = "userId")
+//@JoinColumn(name = "userId")
 private UserTable user;
 
 @Enumerated(EnumType.STRING)
@@ -54,6 +56,16 @@ public void setId(long id)
 	this.id = id;
 }*/
 
+
+/*public List<MeterCount> getMeterCounts()
+{
+	return meterCounts;
+}
+
+public void setMeterCounts(List<MeterCount> meterCounts)
+{
+	this.meterCounts = meterCounts;
+}*/
 
 public Key getKey()
 {

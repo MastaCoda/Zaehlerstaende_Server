@@ -12,22 +12,22 @@ import javax.persistence.ManyToOne;
 
 import com.google.appengine.api.datastore.Key;
 
-@Entity
+//@Entity
 public class MeterCount
 {
 	
-	@Id
+	/*@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	//private Long id;
 	private Key key;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "meterId")
+	//@JoinColumn(name = "meterId")
 	private Meter meter;
 	
 	private float value;
 	
-	private Date date;
+	private String date;
 
 	/*public Long getId()
 	{
@@ -39,7 +39,7 @@ public class MeterCount
 		this.id = id;
 	}
 */
-	public Meter getMeter()
+	/*public Meter getMeter()
 	{
 		return meter;
 	}
@@ -69,13 +69,13 @@ public class MeterCount
 		this.value = value;
 	}
 
-	public Date getDate()
+	public String getDate()
 	{
 		return date;
 	}
 
-	public void setDate(Date date)
+	public void setDate(String date)
 	{
 		this.date = date;
-	}
+	}*/
 }

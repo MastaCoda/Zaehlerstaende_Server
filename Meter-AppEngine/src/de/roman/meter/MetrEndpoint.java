@@ -1,25 +1,26 @@
 package de.roman.meter;
 
-import de.roman.meter.EMF;
+import de.roman.meter.PMF;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 
-@Api(name = "metercountendpoint", namespace = @ApiNamespace(ownerDomain = "roman.de", ownerName = "roman.de", packagePath = "meter"))
-public class MeterCountEndpoint
+@Api(name = "metrendpoint", namespace = @ApiNamespace(ownerDomain = "roman.de", ownerName = "roman.de", packagePath = "meter"))
+public class MetrEndpoint
 {
 
 	/**
@@ -31,48 +32,48 @@ public class MeterCountEndpoint
 	 */
 	@SuppressWarnings(
 	{ "unchecked", "unused" })
-	@ApiMethod(name = "listMeterCount")
-	public CollectionResponse<MeterCount> listMeterCount(
+	@ApiMethod(name = "listMetr")
+	public CollectionResponse<Metr> listMetr(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit)
 	{
 
-		EntityManager mgr = null;
+		PersistenceManager mgr = null;
 		Cursor cursor = null;
-		List<MeterCount> execute = null;
+		List<Metr> execute = null;
 
 		try
 		{
-			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from MeterCount as MeterCount");
+			mgr = getPersistenceManager();
+			Query query = mgr.newQuery(Metr.class);
 			if (cursorString != null && cursorString != "")
 			{
 				cursor = Cursor.fromWebSafeString(cursorString);
-				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
+				HashMap<String, Object> extensionMap = new HashMap<String, Object>();
+				extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
+				query.setExtensions(extensionMap);
 			}
 
 			if (limit != null)
 			{
-				query.setFirstResult(0);
-				query.setMaxResults(limit);
+				query.setRange(0, limit);
 			}
 
-			execute = (List<MeterCount>) query.getResultList();
-			cursor = JPACursorHelper.getCursor(execute);
+			execute = (List<Metr>) query.execute();
+			cursor = JDOCursorHelper.getCursor(execute);
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
 
 			// Tight loop for fetching all entities from datastore and accomodate
 			// for lazy fetch.
-			for (MeterCount obj : execute)
+			for (Metr obj : execute)
 				;
 		} finally
 		{
 			mgr.close();
 		}
 
-		return CollectionResponse.<MeterCount> builder().setItems(execute)
+		return CollectionResponse.<Metr> builder().setItems(execute)
 				.setNextPageToken(cursorString).build();
 	}
 
@@ -82,19 +83,19 @@ public class MeterCountEndpoint
 	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getMeterCount")
-	public MeterCount getMeterCount(@Named("id") Long id)
+	@ApiMethod(name = "getMetr")
+	public Metr getMetr(@Named("id") Long id)
 	{
-		EntityManager mgr = getEntityManager();
-		MeterCount metercount = null;
+		PersistenceManager mgr = getPersistenceManager();
+		Metr metr = null;
 		try
 		{
-			metercount = mgr.find(MeterCount.class, id);
+			metr = mgr.getObjectById(Metr.class, id);
 		} finally
 		{
 			mgr.close();
 		}
-		return metercount;
+		return metr;
 	}
 
 	/**
@@ -102,25 +103,25 @@ public class MeterCountEndpoint
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param metercount the entity to be inserted.
+	 * @param metr the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertMeterCount")
-	public MeterCount insertMeterCount(MeterCount metercount)
+	@ApiMethod(name = "insertMetr")
+	public Metr insertMetr(Metr metr)
 	{
-		EntityManager mgr = getEntityManager();
+		PersistenceManager mgr = getPersistenceManager();
 		try
 		{
-			if (containsMeterCount(metercount))
+			if (containsMetr(metr))
 			{
 				throw new EntityExistsException("Object already exists");
 			}
-			mgr.persist(metercount);
+			mgr.makePersistent(metr);
 		} finally
 		{
 			mgr.close();
 		}
-		return metercount;
+		return metr;
 	}
 
 	/**
@@ -128,25 +129,25 @@ public class MeterCountEndpoint
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param metercount the entity to be updated.
+	 * @param metr the entity to be updated.
 	 * @return The updated entity.
 	 */
-	@ApiMethod(name = "updateMeterCount")
-	public MeterCount updateMeterCount(MeterCount metercount)
+	@ApiMethod(name = "updateMetr")
+	public Metr updateMetr(Metr metr)
 	{
-		EntityManager mgr = getEntityManager();
+		PersistenceManager mgr = getPersistenceManager();
 		try
 		{
-			if (!containsMeterCount(metercount))
+			if (!containsMetr(metr))
 			{
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			mgr.persist(metercount);
+			mgr.makePersistent(metr);
 		} finally
 		{
 			mgr.close();
 		}
-		return metercount;
+		return metr;
 	}
 
 	/**
@@ -156,37 +157,36 @@ public class MeterCountEndpoint
 	 * @param id the primary key of the entity to be deleted.
 	 * @return The deleted entity.
 	 */
-	@ApiMethod(name = "removeMeterCount")
-	public MeterCount removeMeterCount(@Named("id") Long id)
+	@ApiMethod(name = "removeMetr")
+	public Metr removeMetr(@Named("id") Long id)
 	{
-		EntityManager mgr = getEntityManager();
-		MeterCount metercount = null;
+		PersistenceManager mgr = getPersistenceManager();
+		Metr metr = null;
 		try
 		{
-			metercount = mgr.find(MeterCount.class, id);
-			mgr.remove(metercount);
+			metr = mgr.getObjectById(Metr.class, id);
+			mgr.deletePersistent(metr);
 		} finally
 		{
 			mgr.close();
 		}
-		return metercount;
+		return metr;
 	}
 
-	private boolean containsMeterCount(MeterCount metercount)
+	private boolean containsMetr(Metr metr)
 	{
-		if (metercount.getKey() == null)
+		if (metr.getKey() == null)
 		{
 			return false;
 		}
-		EntityManager mgr = getEntityManager();
+		PersistenceManager mgr = getPersistenceManager();
 		boolean contains = true;
 		try
 		{
-			MeterCount item = mgr.find(MeterCount.class, metercount.getKey());
-			if (item == null)
-			{
-				contains = false;
-			}
+			mgr.getObjectById(Metr.class, metr.getKey());
+		} catch (javax.jdo.JDOObjectNotFoundException ex)
+		{
+			contains = false;
 		} finally
 		{
 			mgr.close();
@@ -194,9 +194,9 @@ public class MeterCountEndpoint
 		return contains;
 	}
 
-	private static EntityManager getEntityManager()
+	private static PersistenceManager getPersistenceManager()
 	{
-		return EMF.get().createEntityManager();
+		return PMF.get().getPersistenceManager();
 	}
 
 }
