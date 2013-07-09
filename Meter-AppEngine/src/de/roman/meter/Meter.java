@@ -1,129 +1,137 @@
 package de.roman.meter;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
-@Entity
+
+
+@PersistenceCapable
 public class Meter
 {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-//private long id;
-private Key key;
+	@PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key key;
 
-/*@OneToMany(mappedBy="meter", cascade = CascadeType.ALL)
-private List<MeterCount> meterCounts = new ArrayList<MeterCount>();*/
+	@Persistent
+	private User user;
 
+	@Persistent
+	private String name;
 
-@ManyToOne(fetch=FetchType.LAZY)
-//@JoinColumn(name = "userId")
-private UserTable user;
-
-@Enumerated(EnumType.STRING)
-private MeterTypes types;
-
-
-@Enumerated(EnumType.STRING)
-private Units units;
-
-private String name;
-
-private String description;
-
-
-
-/*public long getId()
-{
-	return id;
-}
-
-public void setId(long id)
-{
-	this.id = id;
-}*/
+	@Persistent
+	private String description;
+	
+	@Persistent
+    private MeterTypes type;
+	
+	@Persistent
+	private Units unit;
+	
+	@Persistent
+	private float lastCount;
+	
+	@Persistent
+	private Date lastCountDate;
+	
+	
+	@Persistent(mappedBy = "meter")
+	private List<MeterCount> metercounts;
 
 
-/*public List<MeterCount> getMeterCounts()
-{
-	return meterCounts;
-}
+	public List<MeterCount> getMetercounts()
+	{
+		return metercounts;
+	}
 
-public void setMeterCounts(List<MeterCount> meterCounts)
-{
-	this.meterCounts = meterCounts;
-}*/
+	public void setMetercounts(List<MeterCount> metercounts)
+	{
+		this.metercounts = metercounts;
+	}
 
-public Key getKey()
-{
-	return key;
-}
+	public Key getKey()
+	{
+		return key;
+	}
 
-public void setKey(Key key)
-{
-	this.key = key;
-}
+	public void setKey(Key key)
+	{
+		this.key = key;
+	}
 
-public UserTable getUser()
-{
-	return user;
-}
+//	public User getUser()
+//	{
+//		return user;
+//	}
 
-public void setUser(UserTable user)
-{
-	this.user = user;
-}
+	public void setUser(User user)
+	{
+		this.user = user;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
 
-public MeterTypes getTypes()
-{
-	return types;
-}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-public void setTypes(MeterTypes types)
-{
-	this.types = types;
-}
+	public String getDescription()
+	{
+		return description;
+	}
 
-public Units getUnits()
-{
-	return units;
-}
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
 
-public void setUnits(Units units)
-{
-	this.units = units;
-}
+	public MeterTypes getType()
+	{
+		return type;
+	}
 
-public String getName()
-{
-	return name;
-}
+	public void setType(MeterTypes type)
+	{
+		this.type = type;
+	}
 
-public void setName(String name)
-{
-	this.name = name;
-}
+	public Units getUnit()
+	{
+		return unit;
+	}
 
-public String getDescription()
-{
-	return description;
-}
+	public void setUnit(Units unit)
+	{
+		this.unit = unit;
+	}
 
-public void setDescription(String description)
-{
-	this.description = description;
-}
+	public float getLastCount()
+	{
+		return lastCount;
+	}
+
+	public void setLastCount(float lastCount)
+	{
+		this.lastCount = lastCount;
+	}
+
+	public Date getLastCountDate()
+	{
+		return lastCountDate;
+	}
+
+	public void setLastCountDate(Date lastCountDate)
+	{
+		this.lastCountDate = lastCountDate;
+	}
 }

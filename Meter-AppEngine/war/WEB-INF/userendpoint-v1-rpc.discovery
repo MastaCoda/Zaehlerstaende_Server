@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/Oc25U7vlQYwUQYiqhKpWLJ0u7oA\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/POetweiZifWbl4nMWZihN4L_hjQ\"",
  "discoveryVersion": "v1",
  "id": "userendpoint:v1",
  "name": "userendpoint",
@@ -106,8 +106,8 @@
     }
    }
   },
-  "Metr": {
-   "id": "Metr",
+  "Meter": {
+   "id": "Meter",
    "type": "object",
    "properties": {
     "description": {
@@ -116,48 +116,118 @@
     "key": {
      "$ref": "Key"
     },
+    "lastCount": {
+     "type": "number",
+     "format": "float"
+    },
+    "lastCountDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "metercounts": {
+     "type": "array",
+     "items": {
+      "$ref": "MeterCount"
+     }
+    },
     "name": {
      "type": "string"
+    },
+    "type": {
+     "$ref": "MeterTypes"
+    },
+    "unit": {
+     "$ref": "Units"
+    },
+    "user": {
+     "$ref": "User"
     }
    }
   },
-  "MetrCollection": {
-   "id": "MetrCollection",
+  "MeterCollection": {
+   "id": "MeterCollection",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "Metr"
+      "$ref": "Meter"
      }
     }
    }
+  },
+  "MeterCount": {
+   "id": "MeterCount",
+   "type": "object",
+   "properties": {
+    "date": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "key": {
+     "$ref": "Key"
+    },
+    "meter": {
+     "$ref": "Meter"
+    },
+    "value": {
+     "type": "number",
+     "format": "float"
+    }
+   }
+  },
+  "MeterTypes": {
+   "id": "MeterTypes",
+   "type": "string",
+   "enum": [
+    "Gas",
+    "Strom",
+    "Wasser",
+    "Öl"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "Units": {
+   "id": "Units",
+   "type": "string",
+   "enum": [
+    "Liter",
+    "kWh",
+    "m³"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    ""
+   ]
   },
   "User": {
    "id": "User",
    "type": "object",
    "properties": {
+    "email": {
+     "type": "string"
+    },
     "id": {
      "$ref": "Key"
     },
-    "metersl": {
+    "meters": {
      "type": "array",
      "items": {
-      "$ref": "Metr"
+      "$ref": "Meter"
      }
-    },
-    "name": {
-     "type": "string"
-    },
-    "password": {
-     "type": "string"
     }
    }
   }
  },
  "methods": {
-  "userendpoint.getMeterWithUserId": {
-   "id": "userendpoint.getMeterWithUserId",
+  "userendpoint.getMeterListWithUserId": {
+   "id": "userendpoint.getMeterListWithUserId",
    "allowGet": true,
    "parameters": {
     "id": {
@@ -170,7 +240,7 @@
     "id"
    ],
    "returns": {
-    "$ref": "MetrCollection"
+    "$ref": "MeterCollection"
    }
   },
   "userendpoint.getUser": {
@@ -217,6 +287,36 @@
      "type": "string",
      "required": true
     },
+    "MeterType": {
+     "type": "string",
+     "required": true,
+     "enum": [
+      "Gas",
+      "Strom",
+      "Wasser",
+      "Öl"
+     ],
+     "enumDescriptions": [
+      "",
+      "",
+      "",
+      ""
+     ]
+    },
+    "MeterUnit": {
+     "type": "string",
+     "required": true,
+     "enum": [
+      "Liter",
+      "kWh",
+      "m³"
+     ],
+     "enumDescriptions": [
+      "",
+      "",
+      ""
+     ]
+    },
     "UserId": {
      "type": "string",
      "required": true,
@@ -226,10 +326,12 @@
    "parameterOrder": [
     "MeterDesc",
     "MeterName",
+    "MeterType",
+    "MeterUnit",
     "UserId"
    ],
    "returns": {
-    "$ref": "Metr"
+    "$ref": "Meter"
    }
   },
   "userendpoint.insertUser": {

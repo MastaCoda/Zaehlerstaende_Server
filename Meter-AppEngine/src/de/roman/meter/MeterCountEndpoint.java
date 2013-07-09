@@ -1,25 +1,26 @@
 package de.roman.meter;
 
-import de.roman.meter.EMF;
+import de.roman.meter.PMF;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 
-@Api(name = "deviceinfoendpoint", namespace = @ApiNamespace(ownerDomain = "roman.de", ownerName = "roman.de", packagePath = "meter"))
-public class DeviceInfoEndpoint
+@Api(name = "metercountendpoint", namespace = @ApiNamespace(ownerDomain = "roman.de", ownerName = "roman.de", packagePath = "meter"))
+public class MeterCountEndpoint
 {
 
 	/**
@@ -31,48 +32,48 @@ public class DeviceInfoEndpoint
 	 */
 	@SuppressWarnings(
 	{ "unchecked", "unused" })
-	@ApiMethod(name = "listDeviceInfo")
-	public CollectionResponse<DeviceInfo> listDeviceInfo(
+	@ApiMethod(name = "listMeterCount")
+	public CollectionResponse<MeterCount> listMeterCount(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("limit") Integer limit)
 	{
 
-		EntityManager mgr = null;
+		PersistenceManager mgr = null;
 		Cursor cursor = null;
-		List<DeviceInfo> execute = null;
+		List<MeterCount> execute = null;
 
 		try
 		{
-			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from DeviceInfo as DeviceInfo");
+			mgr = getPersistenceManager();
+			Query query = mgr.newQuery(MeterCount.class);
 			if (cursorString != null && cursorString != "")
 			{
 				cursor = Cursor.fromWebSafeString(cursorString);
-				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
+				HashMap<String, Object> extensionMap = new HashMap<String, Object>();
+				extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
+				query.setExtensions(extensionMap);
 			}
 
 			if (limit != null)
 			{
-				query.setFirstResult(0);
-				query.setMaxResults(limit);
+				query.setRange(0, limit);
 			}
 
-			execute = (List<DeviceInfo>) query.getResultList();
-			cursor = JPACursorHelper.getCursor(execute);
+			execute = (List<MeterCount>) query.execute();
+			cursor = JDOCursorHelper.getCursor(execute);
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
 
 			// Tight loop for fetching all entities from datastore and accomodate
 			// for lazy fetch.
-			for (DeviceInfo obj : execute)
+			for (MeterCount obj : execute)
 				;
 		} finally
 		{
 			mgr.close();
 		}
 
-		return CollectionResponse.<DeviceInfo> builder().setItems(execute)
+		return CollectionResponse.<MeterCount> builder().setItems(execute)
 				.setNextPageToken(cursorString).build();
 	}
 
@@ -82,19 +83,19 @@ public class DeviceInfoEndpoint
 	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
-	@ApiMethod(name = "getDeviceInfo")
-	public DeviceInfo getDeviceInfo(@Named("id") String id)
+	@ApiMethod(name = "getMeterCount")
+	public MeterCount getMeterCount(@Named("id") Long id)
 	{
-		EntityManager mgr = getEntityManager();
-		DeviceInfo deviceinfo = null;
+		PersistenceManager mgr = getPersistenceManager();
+		MeterCount metercount = null;
 		try
 		{
-			deviceinfo = mgr.find(DeviceInfo.class, id);
+			metercount = mgr.getObjectById(MeterCount.class, id);
 		} finally
 		{
 			mgr.close();
 		}
-		return deviceinfo;
+		return metercount;
 	}
 
 	/**
@@ -102,25 +103,25 @@ public class DeviceInfoEndpoint
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param deviceinfo the entity to be inserted.
+	 * @param metercount the entity to be inserted.
 	 * @return The inserted entity.
 	 */
-	@ApiMethod(name = "insertDeviceInfo")
-	public DeviceInfo insertDeviceInfo(DeviceInfo deviceinfo)
+	@ApiMethod(name = "insertMeterCount")
+	public MeterCount insertMeterCount(MeterCount metercount)
 	{
-		EntityManager mgr = getEntityManager();
+		PersistenceManager mgr = getPersistenceManager();
 		try
 		{
-			if (containsDeviceInfo(deviceinfo))
+			if (containsMeterCount(metercount))
 			{
 				throw new EntityExistsException("Object already exists");
 			}
-			mgr.persist(deviceinfo);
+			mgr.makePersistent(metercount);
 		} finally
 		{
 			mgr.close();
 		}
-		return deviceinfo;
+		return metercount;
 	}
 
 	/**
@@ -128,25 +129,25 @@ public class DeviceInfoEndpoint
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param deviceinfo the entity to be updated.
+	 * @param metercount the entity to be updated.
 	 * @return The updated entity.
 	 */
-	@ApiMethod(name = "updateDeviceInfo")
-	public DeviceInfo updateDeviceInfo(DeviceInfo deviceinfo)
+	@ApiMethod(name = "updateMeterCount")
+	public MeterCount updateMeterCount(MeterCount metercount)
 	{
-		EntityManager mgr = getEntityManager();
+		PersistenceManager mgr = getPersistenceManager();
 		try
 		{
-			if (!containsDeviceInfo(deviceinfo))
+			if (!containsMeterCount(metercount))
 			{
 				throw new EntityNotFoundException("Object does not exist");
 			}
-			mgr.persist(deviceinfo);
+			mgr.makePersistent(metercount);
 		} finally
 		{
 			mgr.close();
 		}
-		return deviceinfo;
+		return metercount;
 	}
 
 	/**
@@ -156,34 +157,32 @@ public class DeviceInfoEndpoint
 	 * @param id the primary key of the entity to be deleted.
 	 * @return The deleted entity.
 	 */
-	@ApiMethod(name = "removeDeviceInfo")
-	public DeviceInfo removeDeviceInfo(@Named("id") String id)
+	@ApiMethod(name = "removeMeterCount")
+	public MeterCount removeMeterCount(@Named("id") Long id)
 	{
-		EntityManager mgr = getEntityManager();
-		DeviceInfo deviceinfo = null;
+		PersistenceManager mgr = getPersistenceManager();
+		MeterCount metercount = null;
 		try
 		{
-			deviceinfo = mgr.find(DeviceInfo.class, id);
-			mgr.remove(deviceinfo);
+			metercount = mgr.getObjectById(MeterCount.class, id);
+			mgr.deletePersistent(metercount);
 		} finally
 		{
 			mgr.close();
 		}
-		return deviceinfo;
+		return metercount;
 	}
 
-	private boolean containsDeviceInfo(DeviceInfo deviceinfo)
+	private boolean containsMeterCount(MeterCount metercount)
 	{
-		EntityManager mgr = getEntityManager();
+		PersistenceManager mgr = getPersistenceManager();
 		boolean contains = true;
 		try
 		{
-			DeviceInfo item = mgr.find(DeviceInfo.class,
-					deviceinfo.getDeviceRegistrationID());
-			if (item == null)
-			{
-				contains = false;
-			}
+			mgr.getObjectById(MeterCount.class, metercount.getKey());
+		} catch (javax.jdo.JDOObjectNotFoundException ex)
+		{
+			contains = false;
 		} finally
 		{
 			mgr.close();
@@ -191,9 +190,9 @@ public class DeviceInfoEndpoint
 		return contains;
 	}
 
-	private static EntityManager getEntityManager()
+	private static PersistenceManager getPersistenceManager()
 	{
-		return EMF.get().createEntityManager();
+		return PMF.get().getPersistenceManager();
 	}
 
 }

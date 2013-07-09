@@ -1,48 +1,30 @@
 package de.roman.meter;
 
-import java.sql.Date;
+import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
-//@Entity
+@PersistenceCapable
 public class MeterCount
 {
 	
-	/*@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//private Long id;
+	@PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key key;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	//@JoinColumn(name = "meterId")
-	private Meter meter;
 	
+	@Persistent
 	private float value;
 	
-	private String date;
-
-	/*public Long getId()
-	{
-		return id;
-	}
-
-	public void setId(Long id)
-	{
-		this.id = id;
-	}
-*/
-	/*public Meter getMeter()
-	{
-		return meter;
-	}
+	@Persistent
+	private Date date;
+	
+	@Persistent
+	private Meter meter;
 
 	public Key getKey()
 	{
@@ -52,11 +34,6 @@ public class MeterCount
 	public void setKey(Key key)
 	{
 		this.key = key;
-	}
-
-	public void setMeter(Meter meter)
-	{
-		this.meter = meter;
 	}
 
 	public float getValue()
@@ -69,13 +46,18 @@ public class MeterCount
 		this.value = value;
 	}
 
-	public String getDate()
+	public Date getDate()
 	{
 		return date;
 	}
 
-	public void setDate(String date)
+	public void setDate(Date date)
 	{
 		this.date = date;
-	}*/
+	}
+
+	public void setMeter(Meter meter)
+	{
+		this.meter = meter;
+	}	
 }

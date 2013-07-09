@@ -3,7 +3,6 @@ package de.roman.meter;
 import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -16,49 +15,13 @@ public class User
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key id;
-	
-	//@Persistent(mappedBy = "userl")
-    //private Metr meter;
 
-	@Persistent(mappedBy = "userl")
-	private List<Metr> metersl;
-
-	
-	public List<Metr> getMetersl()
-	{
-		return metersl;
-	}
-
-	public void setMetersl(List<Metr> metersl)
-	{
-		this.metersl = metersl;
-	}
+	@Persistent(mappedBy = "user")
+	private List<Meter> meters;
 
 	@Persistent
-	private String name;
+	private String email;
 
-	@Persistent
-	private String password;
-
-	// public List<Metr> getMeters()
-	// {
-	// return metersl;
-	// }
-
-	// public void setMeters(List<Metr> metersl)
-	// {
-	// this.metersl = metersl;
-	// }
-
-	// public Long getId()
-	// {
-	// return id;
-	// }
-
-//	public Metr getMetersl()
-//	{
-//		return metersl;
-//	}
 
 	public Key getId()
 	{
@@ -69,34 +32,24 @@ public class User
 	{
 		this.id = id;
 	}
-
-//	public void setMetersl(Metr metersl)
-//	{
-//		this.metersl = metersl;
-//	}
-//
-	// public void setId(Long id)
-	// {
-	// this.id = id;
-	// }
-
-	public String getName()
+	
+	public List<Meter> getMeters()
 	{
-		return name;
+		return meters;
 	}
 
-	public void setName(String name)
+	public void setMeters(List<Meter> meters)
 	{
-		this.name = name;
+		this.meters = meters;
 	}
 
-	public String getPassword()
+	public String getEmail()
 	{
-		return password;
+		return email;
 	}
 
-	public void setPassword(String password)
+	public void setEmail(String email)
 	{
-		this.password = password;
+		this.email = email;
 	}
 }

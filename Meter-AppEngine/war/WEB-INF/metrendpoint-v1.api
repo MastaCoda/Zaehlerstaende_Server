@@ -27,28 +27,61 @@
   "ownerName" : "roman.de",
   "packagePath" : "meter",
   "methods" : {
-    "metrendpoint.insertMetr" : {
-      "path" : "metr",
+    "metrendpoint.insertMeterCountToUser" : {
+      "path" : "insertMeterCountToUser",
       "httpMethod" : "POST",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MetrEndpoint.insertMetr",
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.insertMeterCountToUser",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "UserId" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "MeterId" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "metercountvalue" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
     },
     "metrendpoint.getMetr" : {
-      "path" : "metr/{id}",
+      "path" : "meter/{id}",
       "httpMethod" : "GET",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MetrEndpoint.getMetr",
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.getMetr",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "metrendpoint.removeMetr" : {
+      "path" : "metr/{id}",
+      "httpMethod" : "DELETE",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.removeMetr",
       "request" : {
         "parameters" : {
           "id" : {
@@ -63,30 +96,51 @@
       }
     },
     "metrendpoint.updateMetr" : {
-      "path" : "metr",
+      "path" : "meter/{UserId}/{MeterId}/{Value}/{Date}",
       "httpMethod" : "PUT",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MetrEndpoint.updateMetr",
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.updateMetr",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "UserId" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "MeterId" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "Value" : {
+            "type" : "string",
+            "required" : true
+          },
+          "Date" : {
+            "type" : "datetime",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "metrendpoint.removeMetr" : {
-      "path" : "metr/{id}",
-      "httpMethod" : "DELETE",
+    "metrendpoint.getMeterCountListWithUserId" : {
+      "path" : "getMeterCountListWithUserId",
+      "httpMethod" : "GET",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MetrEndpoint.removeMetr",
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.getMeterCountListWithUserId",
       "request" : {
         "parameters" : {
-          "id" : {
+          "UserId" : {
+            "type" : "int64",
+            "required" : true
+          },
+          "MeterId" : {
             "type" : "int64",
             "required" : true
           }
@@ -98,12 +152,12 @@
       }
     },
     "metrendpoint.listMetr" : {
-      "path" : "metr",
+      "path" : "meter",
       "httpMethod" : "GET",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MetrEndpoint.listMetr",
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.listMetr",
       "request" : {
         "parameters" : {
           "cursor" : {
@@ -120,22 +174,42 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "metrendpoint.insertMetr" : {
+      "path" : "meter",
+      "httpMethod" : "POST",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.insertMetr",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
     "schemas" : {
-      "Metr" : {
-        "id" : "Metr",
+      "MeterCount" : {
+        "id" : "MeterCount",
         "type" : "object",
         "properties" : {
           "key" : {
             "$ref" : "Key"
           },
-          "name" : {
-            "type" : "string"
+          "value" : {
+            "type" : "number",
+            "format" : "float"
           },
-          "description" : {
-            "type" : "string"
+          "date" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "meter" : {
+            "$ref" : "Meter"
           }
         }
       },
@@ -167,14 +241,92 @@
           }
         }
       },
-      "CollectionResponse_Metr" : {
-        "id" : "CollectionResponse_Metr",
+      "Meter" : {
+        "id" : "Meter",
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "$ref" : "Key"
+          },
+          "user" : {
+            "$ref" : "User"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "type" : {
+            "$ref" : "MeterTypes"
+          },
+          "unit" : {
+            "$ref" : "Units"
+          },
+          "lastCount" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "lastCountDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "metercounts" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "MeterCount"
+            }
+          }
+        }
+      },
+      "User" : {
+        "id" : "User",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "$ref" : "Key"
+          },
+          "meters" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Meter"
+            }
+          },
+          "email" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MeterTypes" : {
+        "id" : "MeterTypes",
+        "type" : "string",
+        "enum" : [ "Strom", "Gas", "Wasser", "Öl" ]
+      },
+      "Units" : {
+        "id" : "Units",
+        "type" : "string",
+        "enum" : [ "kWh", "Liter", "m³" ]
+      },
+      "MeterCountCollection" : {
+        "id" : "MeterCountCollection",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "$ref" : "Metr"
+              "$ref" : "MeterCount"
+            }
+          }
+        }
+      },
+      "CollectionResponse_Meter" : {
+        "id" : "CollectionResponse_Meter",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Meter"
             }
           },
           "nextPageToken" : {
@@ -184,35 +336,42 @@
       }
     },
     "methods" : {
-      "de.roman.meter.MetrEndpoint.insertMetr" : {
+      "de.roman.meter.MeterEndpoint.insertMeterCountToUser" : {
+        "response" : {
+          "$ref" : "MeterCount"
+        }
+      },
+      "de.roman.meter.MeterEndpoint.getMetr" : {
+        "response" : {
+          "$ref" : "Meter"
+        }
+      },
+      "de.roman.meter.MeterEndpoint.removeMetr" : {
+        "response" : {
+          "$ref" : "Meter"
+        }
+      },
+      "de.roman.meter.MeterEndpoint.updateMetr" : {
+        "response" : {
+          "$ref" : "Meter"
+        }
+      },
+      "de.roman.meter.MeterEndpoint.getMeterCountListWithUserId" : {
+        "response" : {
+          "$ref" : "MeterCountCollection"
+        }
+      },
+      "de.roman.meter.MeterEndpoint.listMetr" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Meter"
+        }
+      },
+      "de.roman.meter.MeterEndpoint.insertMetr" : {
         "request" : {
-          "$ref" : "Metr"
+          "$ref" : "Meter"
         },
         "response" : {
-          "$ref" : "Metr"
-        }
-      },
-      "de.roman.meter.MetrEndpoint.getMetr" : {
-        "response" : {
-          "$ref" : "Metr"
-        }
-      },
-      "de.roman.meter.MetrEndpoint.updateMetr" : {
-        "request" : {
-          "$ref" : "Metr"
-        },
-        "response" : {
-          "$ref" : "Metr"
-        }
-      },
-      "de.roman.meter.MetrEndpoint.removeMetr" : {
-        "response" : {
-          "$ref" : "Metr"
-        }
-      },
-      "de.roman.meter.MetrEndpoint.listMetr" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Metr"
+          "$ref" : "Meter"
         }
       }
     }

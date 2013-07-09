@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/BLAfNulGRxK17MCx7vLuGXkGGCs\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/-xKkgr0ZTHiJynkKP7vVNq4xMF8\"",
  "discoveryVersion": "v1",
  "id": "metrendpoint:v1",
  "name": "metrendpoint",
@@ -63,14 +63,14 @@
   }
  },
  "schemas": {
-  "CollectionResponse_Metr": {
-   "id": "CollectionResponse_Metr",
+  "CollectionResponse_Meter": {
+   "id": "CollectionResponse_Meter",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "Metr"
+      "$ref": "Meter"
      }
     },
     "nextPageToken": {
@@ -106,8 +106,8 @@
     }
    }
   },
-  "Metr": {
-   "id": "Metr",
+  "Meter": {
+   "id": "Meter",
    "type": "object",
    "properties": {
     "description": {
@@ -116,13 +116,139 @@
     "key": {
      "$ref": "Key"
     },
+    "lastCount": {
+     "type": "number",
+     "format": "float"
+    },
+    "lastCountDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "metercounts": {
+     "type": "array",
+     "items": {
+      "$ref": "MeterCount"
+     }
+    },
     "name": {
      "type": "string"
+    },
+    "type": {
+     "$ref": "MeterTypes"
+    },
+    "unit": {
+     "$ref": "Units"
+    },
+    "user": {
+     "$ref": "User"
+    }
+   }
+  },
+  "MeterCount": {
+   "id": "MeterCount",
+   "type": "object",
+   "properties": {
+    "date": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "key": {
+     "$ref": "Key"
+    },
+    "meter": {
+     "$ref": "Meter"
+    },
+    "value": {
+     "type": "number",
+     "format": "float"
+    }
+   }
+  },
+  "MeterCountCollection": {
+   "id": "MeterCountCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "MeterCount"
+     }
+    }
+   }
+  },
+  "MeterTypes": {
+   "id": "MeterTypes",
+   "type": "string",
+   "enum": [
+    "Gas",
+    "Strom",
+    "Wasser",
+    "Öl"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "Units": {
+   "id": "Units",
+   "type": "string",
+   "enum": [
+    "Liter",
+    "kWh",
+    "m³"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    ""
+   ]
+  },
+  "User": {
+   "id": "User",
+   "type": "object",
+   "properties": {
+    "email": {
+     "type": "string"
+    },
+    "id": {
+     "$ref": "Key"
+    },
+    "meters": {
+     "type": "array",
+     "items": {
+      "$ref": "Meter"
+     }
     }
    }
   }
  },
  "methods": {
+  "metrendpoint.getMeterCountListWithUserId": {
+   "id": "metrendpoint.getMeterCountListWithUserId",
+   "allowGet": true,
+   "parameters": {
+    "MeterId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    },
+    "UserId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "MeterId",
+    "UserId"
+   ],
+   "returns": {
+    "$ref": "MeterCountCollection"
+   }
+  },
   "metrendpoint.getMetr": {
    "id": "metrendpoint.getMetr",
    "allowGet": true,
@@ -137,21 +263,48 @@
     "id"
    ],
    "returns": {
-    "$ref": "Metr"
+    "$ref": "Meter"
+   }
+  },
+  "metrendpoint.insertMeterCountToUser": {
+   "id": "metrendpoint.insertMeterCountToUser",
+   "parameters": {
+    "MeterId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    },
+    "UserId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    },
+    "metercountvalue": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "MeterId",
+    "UserId",
+    "metercountvalue"
+   ],
+   "returns": {
+    "$ref": "MeterCount"
    }
   },
   "metrendpoint.insertMetr": {
    "id": "metrendpoint.insertMetr",
    "parameters": {
     "resource": {
-     "$ref": "Metr"
+     "$ref": "Meter"
     }
    },
    "parameterOrder": [
     "resource"
    ],
    "returns": {
-    "$ref": "Metr"
+    "$ref": "Meter"
    }
   },
   "metrendpoint.listMetr": {
@@ -167,7 +320,7 @@
     }
    },
    "returns": {
-    "$ref": "CollectionResponse_Metr"
+    "$ref": "CollectionResponse_Meter"
    }
   },
   "metrendpoint.removeMetr": {
@@ -183,21 +336,40 @@
     "id"
    ],
    "returns": {
-    "$ref": "Metr"
+    "$ref": "Meter"
    }
   },
   "metrendpoint.updateMetr": {
    "id": "metrendpoint.updateMetr",
    "parameters": {
-    "resource": {
-     "$ref": "Metr"
+    "Date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time"
+    },
+    "MeterId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    },
+    "UserId": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    },
+    "Value": {
+     "type": "string",
+     "required": true
     }
    },
    "parameterOrder": [
-    "resource"
+    "UserId",
+    "MeterId",
+    "Value",
+    "Date"
    ],
    "returns": {
-    "$ref": "Metr"
+    "$ref": "Meter"
    }
   }
  }

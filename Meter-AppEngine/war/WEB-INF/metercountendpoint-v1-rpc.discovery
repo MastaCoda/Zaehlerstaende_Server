@@ -1,9 +1,9 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/EEJ7cNvdVtXD8cxsNqPTyc-GK1w\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/VrQ543Z-QwTo1g04PJmY8_6IOto\"",
  "discoveryVersion": "v1",
- "id": "messageEndpoint:v1",
- "name": "messageEndpoint",
+ "id": "metercountendpoint:v1",
+ "name": "metercountendpoint",
  "version": "v1",
  "description": "This is an API",
  "ownerDomain": "roman.de",
@@ -63,14 +63,14 @@
   }
  },
  "schemas": {
-  "CollectionResponse_MessageData": {
-   "id": "CollectionResponse_MessageData",
+  "CollectionResponse_MeterCount": {
+   "id": "CollectionResponse_MeterCount",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "MessageData"
+      "$ref": "MeterCount"
      }
     },
     "nextPageToken": {
@@ -106,26 +106,147 @@
     }
    }
   },
-  "MessageData": {
-   "id": "MessageData",
+  "Meter": {
+   "id": "Meter",
    "type": "object",
    "properties": {
+    "description": {
+     "type": "string"
+    },
     "key": {
      "$ref": "Key"
     },
-    "message": {
+    "lastCount": {
+     "type": "number",
+     "format": "float"
+    },
+    "lastCountDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "metercounts": {
+     "type": "array",
+     "items": {
+      "$ref": "MeterCount"
+     }
+    },
+    "name": {
      "type": "string"
     },
-    "timestamp": {
+    "type": {
+     "$ref": "MeterTypes"
+    },
+    "unit": {
+     "$ref": "Units"
+    },
+    "user": {
+     "$ref": "User"
+    }
+   }
+  },
+  "MeterCount": {
+   "id": "MeterCount",
+   "type": "object",
+   "properties": {
+    "date": {
      "type": "string",
-     "format": "int64"
+     "format": "date-time"
+    },
+    "key": {
+     "$ref": "Key"
+    },
+    "meter": {
+     "$ref": "Meter"
+    },
+    "value": {
+     "type": "number",
+     "format": "float"
+    }
+   }
+  },
+  "MeterTypes": {
+   "id": "MeterTypes",
+   "type": "string",
+   "enum": [
+    "Gas",
+    "Strom",
+    "Wasser",
+    "Öl"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "Units": {
+   "id": "Units",
+   "type": "string",
+   "enum": [
+    "Liter",
+    "kWh",
+    "m³"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    ""
+   ]
+  },
+  "User": {
+   "id": "User",
+   "type": "object",
+   "properties": {
+    "email": {
+     "type": "string"
+    },
+    "id": {
+     "$ref": "Key"
+    },
+    "meters": {
+     "type": "array",
+     "items": {
+      "$ref": "Meter"
+     }
     }
    }
   }
  },
  "methods": {
-  "messageEndpoint.listMessages": {
-   "id": "messageEndpoint.listMessages",
+  "metercountendpoint.getMeterCount": {
+   "id": "metercountendpoint.getMeterCount",
+   "allowGet": true,
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "returns": {
+    "$ref": "MeterCount"
+   }
+  },
+  "metercountendpoint.insertMeterCount": {
+   "id": "metercountendpoint.insertMeterCount",
+   "parameters": {
+    "resource": {
+     "$ref": "MeterCount"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "MeterCount"
+   }
+  },
+  "metercountendpoint.listMeterCount": {
+   "id": "metercountendpoint.listMeterCount",
    "allowGet": true,
    "parameters": {
     "cursor": {
@@ -137,20 +258,38 @@
     }
    },
    "returns": {
-    "$ref": "CollectionResponse_MessageData"
+    "$ref": "CollectionResponse_MeterCount"
    }
   },
-  "messageEndpoint.sendMessage": {
-   "id": "messageEndpoint.sendMessage",
+  "metercountendpoint.removeMeterCount": {
+   "id": "metercountendpoint.removeMeterCount",
    "parameters": {
-    "message": {
+    "id": {
      "type": "string",
-     "required": true
+     "required": true,
+     "format": "int64"
     }
    },
    "parameterOrder": [
-    "message"
-   ]
+    "id"
+   ],
+   "returns": {
+    "$ref": "MeterCount"
+   }
+  },
+  "metercountendpoint.updateMeterCount": {
+   "id": "metercountendpoint.updateMeterCount",
+   "parameters": {
+    "resource": {
+     "$ref": "MeterCount"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "MeterCount"
+   }
   }
  }
 }

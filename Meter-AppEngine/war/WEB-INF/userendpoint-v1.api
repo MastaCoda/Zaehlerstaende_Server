@@ -47,6 +47,32 @@
           "MeterName" : {
             "type" : "string",
             "required" : true
+          },
+          "MeterType" : {
+            "enum" : {
+              "Strom" : {
+              },
+              "Gas" : {
+              },
+              "Wasser" : {
+              },
+              "Öl" : {
+              }
+            },
+            "type" : "string",
+            "required" : true
+          },
+          "MeterUnit" : {
+            "enum" : {
+              "kWh" : {
+              },
+              "Liter" : {
+              },
+              "m³" : {
+              }
+            },
+            "type" : "string",
+            "required" : true
           }
         },
         "body" : "empty"
@@ -154,13 +180,13 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userendpoint.getMeterWithUserId" : {
-      "path" : "getMeterWithUserId",
+    "userendpoint.getMeterListWithUserId" : {
+      "path" : "getMeterListWithUserId",
       "httpMethod" : "GET",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.UserEndpoint.getMeterWithUserId",
+      "rosyMethod" : "de.roman.meter.UserEndpoint.getMeterListWithUserId",
       "request" : {
         "parameters" : {
           "id" : {
@@ -192,18 +218,41 @@
   },
   "descriptor" : {
     "schemas" : {
-      "Metr" : {
-        "id" : "Metr",
+      "Meter" : {
+        "id" : "Meter",
         "type" : "object",
         "properties" : {
           "key" : {
             "$ref" : "Key"
+          },
+          "user" : {
+            "$ref" : "User"
           },
           "name" : {
             "type" : "string"
           },
           "description" : {
             "type" : "string"
+          },
+          "type" : {
+            "$ref" : "MeterTypes"
+          },
+          "unit" : {
+            "$ref" : "Units"
+          },
+          "lastCount" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "lastCountDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "metercounts" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "MeterCount"
+            }
           }
         }
       },
@@ -242,17 +291,44 @@
           "id" : {
             "$ref" : "Key"
           },
-          "metersl" : {
+          "meters" : {
             "type" : "array",
             "items" : {
-              "$ref" : "Metr"
+              "$ref" : "Meter"
             }
           },
-          "name" : {
+          "email" : {
             "type" : "string"
+          }
+        }
+      },
+      "MeterTypes" : {
+        "id" : "MeterTypes",
+        "type" : "string",
+        "enum" : [ "Strom", "Gas", "Wasser", "Öl" ]
+      },
+      "Units" : {
+        "id" : "Units",
+        "type" : "string",
+        "enum" : [ "kWh", "Liter", "m³" ]
+      },
+      "MeterCount" : {
+        "id" : "MeterCount",
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "$ref" : "Key"
           },
-          "password" : {
-            "type" : "string"
+          "value" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "date" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "meter" : {
+            "$ref" : "Meter"
           }
         }
       },
@@ -271,14 +347,14 @@
           }
         }
       },
-      "MetrCollection" : {
-        "id" : "MetrCollection",
+      "MeterCollection" : {
+        "id" : "MeterCollection",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "$ref" : "Metr"
+              "$ref" : "Meter"
             }
           }
         }
@@ -287,7 +363,7 @@
     "methods" : {
       "de.roman.meter.UserEndpoint.insertMeterToUser" : {
         "response" : {
-          "$ref" : "Metr"
+          "$ref" : "Meter"
         }
       },
       "de.roman.meter.UserEndpoint.removeUser" : {
@@ -318,9 +394,9 @@
           "$ref" : "User"
         }
       },
-      "de.roman.meter.UserEndpoint.getMeterWithUserId" : {
+      "de.roman.meter.UserEndpoint.getMeterListWithUserId" : {
         "response" : {
-          "$ref" : "MetrCollection"
+          "$ref" : "MeterCollection"
         }
       },
       "de.roman.meter.UserEndpoint.insertUser" : {
