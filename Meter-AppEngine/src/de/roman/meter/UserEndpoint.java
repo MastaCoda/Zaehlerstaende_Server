@@ -132,7 +132,11 @@ public class UserEndpoint
 
 				if (user.getEmail().equals(email))
 				{
+					
 					break;
+				} else
+				{
+					user = null;
 				}
 			}
 
@@ -234,6 +238,8 @@ public class UserEndpoint
 			meter.setName(name);
 			meter.setType(type);
 			meter.setUnit(unit);
+			meter.setLastCount(0);
+			meter.setLastCountDate(null);
 			user.getMeters().add(meter);
 			mgr.makePersistent(user);
 			mgr.currentTransaction().begin();
