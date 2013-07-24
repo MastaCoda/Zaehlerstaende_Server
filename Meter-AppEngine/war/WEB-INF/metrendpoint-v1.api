@@ -233,11 +233,11 @@
           "parent" : {
             "$ref" : "Key"
           },
-          "namespace" : {
-            "type" : "string"
-          },
           "complete" : {
             "type" : "boolean"
+          },
+          "namespace" : {
+            "type" : "string"
           }
         }
       },
@@ -305,7 +305,7 @@
       "Units" : {
         "id" : "Units",
         "type" : "string",
-        "enum" : [ "kWh", "Liter", "m³" ]
+        "enum" : [ "kWh", "l", "m3" ]
       },
       "MeterCountCollection" : {
         "id" : "MeterCountCollection",

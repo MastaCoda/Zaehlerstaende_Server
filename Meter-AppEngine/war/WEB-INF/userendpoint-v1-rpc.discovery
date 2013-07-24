@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/POetweiZifWbl4nMWZihN4L_hjQ\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/mLvAp4a5I428SCSSlXuSQymGj0g\"",
  "discoveryVersion": "v1",
  "id": "userendpoint:v1",
  "name": "userendpoint",
@@ -196,9 +196,9 @@
    "id": "Units",
    "type": "string",
    "enum": [
-    "Liter",
     "kWh",
-    "m³"
+    "l",
+    "m3"
    ],
    "enumDescriptions": [
     "",
@@ -307,9 +307,9 @@
      "type": "string",
      "required": true,
      "enum": [
-      "Liter",
       "kWh",
-      "m³"
+      "l",
+      "m3"
      ],
      "enumDescriptions": [
       "",

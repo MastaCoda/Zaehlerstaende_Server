@@ -239,7 +239,6 @@ public class UserEndpoint
 			meter.setType(type);
 			meter.setUnit(unit);
 			meter.setLastCount(0);
-			meter.setLastCountDate(null);
 			user.getMeters().add(meter);
 			mgr.makePersistent(user);
 			mgr.currentTransaction().begin();

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/-xKkgr0ZTHiJynkKP7vVNq4xMF8\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/ozJ7q4BDXUqn4dNEAM6GUQLY0vQ\"",
  "discoveryVersion": "v1",
  "id": "metrendpoint:v1",
  "name": "metrendpoint",
@@ -196,9 +196,9 @@
    "id": "Units",
    "type": "string",
    "enum": [
-    "Liter",
     "kWh",
-    "m³"
+    "l",
+    "m3"
    ],
    "enumDescriptions": [
     "",

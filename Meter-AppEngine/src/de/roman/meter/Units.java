@@ -10,13 +10,13 @@ public enum Units
 	
 	LITER {
 	    public String toString() {
-	        return "Liter";
+	        return "l";
 	    }
 	},
 	 
 	CUBIC {
 	    public String toString() {
-	        return "m³";
+	        return "m3";
 	    }
 	}
 }

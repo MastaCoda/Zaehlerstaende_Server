@@ -62,26 +62,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "metercountendpoint.removeMeterCount" : {
-      "path" : "metercount/{id}",
-      "httpMethod" : "DELETE",
-      "scopes" : [ ],
-      "audiences" : [ ],
-      "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MeterCountEndpoint.removeMeterCount",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "metercountendpoint.listMeterCount" : {
       "path" : "metercount",
       "httpMethod" : "GET",
@@ -98,6 +78,26 @@
           "limit" : {
             "type" : "int32",
             "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "metercountendpoint.removeMeterCount" : {
+      "path" : "metercount/{id}",
+      "httpMethod" : "DELETE",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "de.roman.meter.MeterCountEndpoint.removeMeterCount",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
           }
         },
         "body" : "empty"
@@ -164,11 +164,11 @@
           "parent" : {
             "$ref" : "Key"
           },
-          "namespace" : {
-            "type" : "string"
-          },
           "complete" : {
             "type" : "boolean"
+          },
+          "namespace" : {
+            "type" : "string"
           }
         }
       },
@@ -236,7 +236,7 @@
       "Units" : {
         "id" : "Units",
         "type" : "string",
-        "enum" : [ "kWh", "Liter", "m³" ]
+        "enum" : [ "kWh", "l", "m3" ]
       },
       "CollectionResponse_MeterCount" : {
         "id" : "CollectionResponse_MeterCount",
@@ -268,14 +268,14 @@
           "$ref" : "MeterCount"
         }
       },
-      "de.roman.meter.MeterCountEndpoint.removeMeterCount" : {
-        "response" : {
-          "$ref" : "MeterCount"
-        }
-      },
       "de.roman.meter.MeterCountEndpoint.listMeterCount" : {
         "response" : {
           "$ref" : "CollectionResponse_MeterCount"
+        }
+      },
+      "de.roman.meter.MeterCountEndpoint.removeMeterCount" : {
+        "response" : {
+          "$ref" : "MeterCount"
         }
       },
       "de.roman.meter.MeterCountEndpoint.insertMeterCount" : {
