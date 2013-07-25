@@ -55,13 +55,13 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "metrendpoint.getMetr" : {
-      "path" : "meter/{id}",
-      "httpMethod" : "GET",
+    "metrendpoint.removeMetr" : {
+      "path" : "metr/{id}",
+      "httpMethod" : "DELETE",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MeterEndpoint.getMetr",
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.removeMetr",
       "request" : {
         "parameters" : {
           "id" : {
@@ -75,13 +75,13 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "metrendpoint.removeMetr" : {
-      "path" : "metr/{id}",
-      "httpMethod" : "DELETE",
+    "metrendpoint.getMetr" : {
+      "path" : "meter/{id}",
+      "httpMethod" : "GET",
       "scopes" : [ ],
       "audiences" : [ ],
       "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.MeterEndpoint.removeMetr",
+      "rosyMethod" : "de.roman.meter.MeterEndpoint.getMetr",
       "request" : {
         "parameters" : {
           "id" : {
@@ -233,11 +233,11 @@
           "parent" : {
             "$ref" : "Key"
           },
-          "complete" : {
-            "type" : "boolean"
-          },
           "namespace" : {
             "type" : "string"
+          },
+          "complete" : {
+            "type" : "boolean"
           }
         }
       },
@@ -341,12 +341,12 @@
           "$ref" : "MeterCount"
         }
       },
-      "de.roman.meter.MeterEndpoint.getMetr" : {
+      "de.roman.meter.MeterEndpoint.removeMetr" : {
         "response" : {
           "$ref" : "Meter"
         }
       },
-      "de.roman.meter.MeterEndpoint.removeMetr" : {
+      "de.roman.meter.MeterEndpoint.getMetr" : {
         "response" : {
           "$ref" : "Meter"
         }

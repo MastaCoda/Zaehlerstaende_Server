@@ -10,123 +10,125 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
-
-
+/**
+ * Meter entity
+ * 
+ * @author Roman Schneider
+ * 
+ */
 @PersistenceCapable
 public class Meter
 {
-	@PrimaryKey
+    @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key key;
+    private Key key;
 
-	@Persistent
-	private User user;
+    @Persistent
+    private User user;
 
-	@Persistent
-	private String name;
+    @Persistent
+    private String name;
 
-	@Persistent
-	private String description;
-	
-	@Persistent
+    @Persistent
+    private String description;
+
+    @Persistent
     private MeterTypes type;
-	
-	@Persistent
-	private Units unit;
-	
-	@Persistent
-	private float lastCount;
-	
-	@Persistent
-	private Date lastCountDate;
-	
-	
-	@Persistent(mappedBy = "meter")
-	private List<MeterCount> metercounts;
 
+    @Persistent
+    private Units unit;
 
-	public List<MeterCount> getMetercounts()
-	{
-		return metercounts;
-	}
+    @Persistent
+    private float lastCount;
 
-	public void setMetercounts(List<MeterCount> metercounts)
-	{
-		this.metercounts = metercounts;
-	}
+    @Persistent
+    private Date lastCountDate;
 
-	public Key getKey()
-	{
-		return key;
-	}
+    @Persistent(mappedBy = "meter")
+    private List<MeterCount> metercounts;
 
-	public void setKey(Key key)
-	{
-		this.key = key;
-	}
+    public List<MeterCount> getMetercounts()
+    {
+        return metercounts;
+    }
 
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
-	
-	public String getName()
-	{
-		return name;
-	}
+    public void setMetercounts(List<MeterCount> metercounts)
+    {
+        this.metercounts = metercounts;
+    }
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    public Key getKey()
+    {
+        return key;
+    }
 
-	public String getDescription()
-	{
-		return description;
-	}
+    public void setKey(Key key)
+    {
+        this.key = key;
+    }
 
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
 
-	public MeterTypes getType()
-	{
-		return type;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public void setType(MeterTypes type)
-	{
-		this.type = type;
-	}
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
-	public Units getUnit()
-	{
-		return unit;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public void setUnit(Units unit)
-	{
-		this.unit = unit;
-	}
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-	public float getLastCount()
-	{
-		return lastCount;
-	}
+    public MeterTypes getType()
+    {
+        return type;
+    }
 
-	public void setLastCount(float lastCount)
-	{
-		this.lastCount = lastCount;
-	}
+    public void setType(MeterTypes type)
+    {
+        this.type = type;
+    }
 
-	public Date getLastCountDate()
-	{
-		return lastCountDate;
-	}
+    public Units getUnit()
+    {
+        return unit;
+    }
 
-	public void setLastCountDate(Date lastCountDate)
-	{
-		this.lastCountDate = lastCountDate;
-	}
+    public void setUnit(Units unit)
+    {
+        this.unit = unit;
+    }
+
+    public float getLastCount()
+    {
+        return lastCount;
+    }
+
+    public void setLastCount(float lastCount)
+    {
+        this.lastCount = lastCount;
+    }
+
+    public Date getLastCountDate()
+    {
+        return lastCountDate;
+    }
+
+    public void setLastCountDate(Date lastCountDate)
+    {
+        this.lastCountDate = lastCountDate;
+    }
 }

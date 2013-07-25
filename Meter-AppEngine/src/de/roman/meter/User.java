@@ -9,6 +9,11 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
+/**
+ * User entity
+ * @author Roman Schneider
+ *
+ */
 @PersistenceCapable
 public class User
 {

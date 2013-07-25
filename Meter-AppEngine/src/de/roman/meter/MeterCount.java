@@ -9,55 +9,61 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
+/**
+ * MeterCount entity
+ * 
+ * @author Roman Schneider
+ * 
+ */
 @PersistenceCapable
 public class MeterCount
 {
-	
-	@PrimaryKey
+
+    @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key key;
-	
-	@Persistent
-	private float value;
-	
-	@Persistent
-	private Date date;
-	
-	@Persistent
-	private Meter meter;
+    private Key key;
 
-	public Key getKey()
-	{
-		return key;
-	}
+    @Persistent
+    private float value;
 
-	public void setKey(Key key)
-	{
-		this.key = key;
-	}
+    @Persistent
+    private Date date;
 
-	public float getValue()
-	{
-		return value;
-	}
+    @Persistent
+    private Meter meter;
 
-	public void setValue(float value)
-	{
-		this.value = value;
-	}
+    public Key getKey()
+    {
+        return key;
+    }
 
-	public Date getDate()
-	{
-		return date;
-	}
+    public void setKey(Key key)
+    {
+        this.key = key;
+    }
 
-	public void setDate(Date date)
-	{
-		this.date = date;
-	}
+    public float getValue()
+    {
+        return value;
+    }
 
-	public void setMeter(Meter meter)
-	{
-		this.meter = meter;
-	}	
+    public void setValue(float value)
+    {
+        this.value = value;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+
+    public void setMeter(Meter meter)
+    {
+        this.meter = meter;
+    }
 }

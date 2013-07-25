@@ -27,26 +27,6 @@
   "ownerName" : "roman.de",
   "packagePath" : "meter",
   "methods" : {
-    "userendpoint.removeUser" : {
-      "path" : "user/{id}",
-      "httpMethod" : "DELETE",
-      "scopes" : [ ],
-      "audiences" : [ ],
-      "clientIds" : [ ],
-      "rosyMethod" : "de.roman.meter.UserEndpoint.removeUser",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "userendpoint.insertMeterToUser" : {
       "path" : "insertMeterToUser",
       "httpMethod" : "POST",
@@ -69,29 +49,31 @@
             "required" : true
           },
           "MeterType" : {
-            "enum" : {
-              "Strom" : {
-              },
-              "Gas" : {
-              },
-              "Wasser" : {
-              },
-              "Öl" : {
-              }
-            },
             "type" : "string",
             "required" : true
           },
           "MeterUnit" : {
-            "enum" : {
-              "kWh" : {
-              },
-              "l" : {
-              },
-              "m3" : {
-              }
-            },
             "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "userendpoint.removeUser" : {
+      "path" : "user/{id}",
+      "httpMethod" : "DELETE",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "de.roman.meter.UserEndpoint.removeUser",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
             "required" : true
           }
         },
@@ -218,52 +200,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "User" : {
-        "id" : "User",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "$ref" : "Key"
-          },
-          "meters" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Meter"
-            }
-          },
-          "email" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Key" : {
-        "id" : "Key",
-        "type" : "object",
-        "properties" : {
-          "kind" : {
-            "type" : "string"
-          },
-          "appId" : {
-            "type" : "string"
-          },
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "parent" : {
-            "$ref" : "Key"
-          },
-          "complete" : {
-            "type" : "boolean"
-          },
-          "namespace" : {
-            "type" : "string"
-          }
-        }
-      },
       "Meter" : {
         "id" : "Meter",
         "type" : "object",
@@ -299,6 +235,52 @@
             "items" : {
               "$ref" : "MeterCount"
             }
+          }
+        }
+      },
+      "Key" : {
+        "id" : "Key",
+        "type" : "object",
+        "properties" : {
+          "kind" : {
+            "type" : "string"
+          },
+          "appId" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "parent" : {
+            "$ref" : "Key"
+          },
+          "namespace" : {
+            "type" : "string"
+          },
+          "complete" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "User" : {
+        "id" : "User",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "$ref" : "Key"
+          },
+          "meters" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Meter"
+            }
+          },
+          "email" : {
+            "type" : "string"
           }
         }
       },
@@ -361,14 +343,14 @@
       }
     },
     "methods" : {
-      "de.roman.meter.UserEndpoint.removeUser" : {
-        "response" : {
-          "$ref" : "User"
-        }
-      },
       "de.roman.meter.UserEndpoint.insertMeterToUser" : {
         "response" : {
           "$ref" : "Meter"
+        }
+      },
+      "de.roman.meter.UserEndpoint.removeUser" : {
+        "response" : {
+          "$ref" : "User"
         }
       },
       "de.roman.meter.UserEndpoint.getUserByEmail" : {

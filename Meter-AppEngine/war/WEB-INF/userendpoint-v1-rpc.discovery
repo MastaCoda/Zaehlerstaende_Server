@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/mLvAp4a5I428SCSSlXuSQymGj0g\"",
+ "etag": "\"nPbVolg1F8jpPe9kkErPtt8mpZE/USyxSTqWmFdBAfOVlsPaYDLKUcw\"",
  "discoveryVersion": "v1",
  "id": "userendpoint:v1",
  "name": "userendpoint",
@@ -289,33 +289,11 @@
     },
     "MeterType": {
      "type": "string",
-     "required": true,
-     "enum": [
-      "Gas",
-      "Strom",
-      "Wasser",
-      "Öl"
-     ],
-     "enumDescriptions": [
-      "",
-      "",
-      "",
-      ""
-     ]
+     "required": true
     },
     "MeterUnit": {
      "type": "string",
-     "required": true,
-     "enum": [
-      "kWh",
-      "l",
-      "m3"
-     ],
-     "enumDescriptions": [
-      "",
-      "",
-      ""
-     ]
+     "required": true
     },
     "UserId": {
      "type": "string",

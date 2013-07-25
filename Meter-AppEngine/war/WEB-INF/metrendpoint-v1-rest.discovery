@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/ozJ7q4BDXUqn4dNEAM6GUQLY0vQ\"",
+ "etag": "\"nPbVolg1F8jpPe9kkErPtt8mpZE/ozJ7q4BDXUqn4dNEAM6GUQLY0vQ\"",
  "discoveryVersion": "v1",
  "id": "metrendpoint:v1",
  "name": "metrendpoint",
